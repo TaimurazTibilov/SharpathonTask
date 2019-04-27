@@ -11,7 +11,7 @@ namespace SharpathonTask.Client
 			var client = new CustomerDataClient(channel);
 			var customer = client.GetCustomer(new PagedRequest<int>());
 			var customers = client.GetCustomersByNameMask(new PagedRequest<string>());
-			client.GetCustomerContracts(new PagedRequest<int>());
+			var contacts = client.GetCustomerContracts(new PagedRequest<int>());
 			client.GetContractPersonalAccounts(new PagedRequest<string>());
 			client.GetPersonalAccountTerminalDevices(new PagedRequest<string>());
 			client.GetTerminalDeviceServices(new PagedRequest<string>());
