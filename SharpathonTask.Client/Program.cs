@@ -9,7 +9,12 @@ namespace SharpathonTask.Client
 		{
 			var channel = new Channel("127.0.0.1", 10500, ChannelCredentials.Insecure);
 			var client = new CustomerDataClient(channel);
-			var result = client.GetServices(new PagedRequest<string>());
+			var customer = client.GetCustomer(new PagedRequest<int>());
+			var customers = client.GetCustomersByNameMask(new PagedRequest<string>());
+			client.GetCustomerContracts(new PagedRequest<int>());
+			client.GetContractPersonalAccounts(new PagedRequest<string>());
+			client.GetPersonalAccountTerminalDevices(new PagedRequest<string>());
+			client.GetTerminalDeviceServices(new PagedRequest<string>());
 		}
 	}
 }
