@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28803.202
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.572
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpathonTask.Contracts", "SharpathonTask.Contracts\SharpathonTask.Contracts.csproj", "{F24968F2-1FC2-4634-971E-7C3C787DC58F}"
 EndProject
@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpathonTask.Server", "Sh
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpathonTask.Client", "SharpathonTask.Client\SharpathonTask.Client.csproj", "{123B02D4-6BB7-44EF-A3AE-C62A964440AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SharpathonTask.Data", "SharpathonTask.Data\SharpathonTask.Data.csproj", "{36424372-96E3-496C-B714-BC3294F7021C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SharpathonTask.Data", "SharpathonTask.Data\SharpathonTask.Data.csproj", "{36424372-96E3-496C-B714-BC3294F7021C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebApi", "WebApi\WebApi.csproj", "{1F428D4E-7847-4111-A74F-8AEE7C83C1C1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{36424372-96E3-496C-B714-BC3294F7021C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{36424372-96E3-496C-B714-BC3294F7021C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{36424372-96E3-496C-B714-BC3294F7021C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F428D4E-7847-4111-A74F-8AEE7C83C1C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F428D4E-7847-4111-A74F-8AEE7C83C1C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F428D4E-7847-4111-A74F-8AEE7C83C1C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F428D4E-7847-4111-A74F-8AEE7C83C1C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
