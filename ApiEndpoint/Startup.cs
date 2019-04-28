@@ -103,23 +103,47 @@ namespace ApiEndpoint
 				}
 
 				type Query {
+				  customerContracts(
+					id: Int!
+					page: Int = 0
+					perPage: Int = 25
+				  ): [Contract!]
+
+				  customerAccounts(
+					id: Int!
+				    page: Int = 0
+					perPage: Int = 25
+				  ): [PersonalAccount!]
+
 				  customerDevices(
-					customerId: Int!
-					page: Int! = 0
-					itemsPerPage: Int! = 25
+					id: Int!
+					page: Int = 0
+					perPage: Int = 25
 				  ): [TerminalDevice!]
-  
+
+				  contractAccounts(
+					code: String!
+					page: Int = 0
+					perPage: Int = 25
+				  ): [PersonalAccount!]
+
+				  contractDevices(
+					code: String!
+					page: Int = 0
+					perPage: Int = 25
+				  ): [TerminalDevice!]
+
 				  accountServices(
-  					accountCode: String!
-					tarificationFilter: TarificationOption,
-					page: Int! = 0,
-					itemsPerPage: Int! = 25
+  					code: String!
+					tarification: TarificationOption,
+					page: Int = 0,
+					perPage: Int = 25
 				  ): [Service!]
 				}
 
 				type Mutation {
 				  addService(
-					serviceCode: String!
+					code: String!
 					devicesMsisdns: [String!]
 				  ): Boolean
 				}

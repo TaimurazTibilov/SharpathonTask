@@ -26,44 +26,105 @@ namespace ApiEndpoint
 			client = new CustomerDataClient(channel);
 		}
 
-		public IEnumerable<TerminalDevice> GetCustomerDevices(
-			int customerId,
+		public IEnumerable<Contract> GetCustomerContracts(
+			int id,
 			int page = 0,
-			int itemsPerPage = 25)
+			int perPage = 25)
 		{
+			int counter = 0;
 			var contracts = client.GetCustomerContracts(
-				new PagedRequest<int> { Key = customerId }).Items;
+					new PagedRequest<int> { Key = id }).Items;
 			foreach (var contract in contracts)
+				if (++counter <= perPage)
+					yield return contract;
+				else
+					yield break;
+		}
+
+		public IEnumerable<PersonalAccount> GetCustomerAccounts(
+			int id,
+			int page = 0,
+			int perPage = 25)
+		{
+			int counter = 0;
+			foreach (var contract in GetCustomerContracts(id, page, perPage))
 			{
 				var accounts = client.GetContractPersonalAccounts(
 					new PagedRequest<string> { Key = contract.ContractCode }).Items;
 				foreach (var account in accounts)
-				{
-					var devices = client.GetPersonalAccountTerminalDevices(
-						new PagedRequest<string> { Key = account.PersonalAccountId }).Items;
-					foreach (var device in devices)
+					if (++counter <= perPage)
+						yield return account;
+					else
+						yield break;
+			}
+		}
+
+		public IEnumerable<TerminalDevice> GetCustomerDevices(
+			int id,
+			int page = 0,
+			int perPage = 25)
+		{
+			int counter = 0;
+			foreach (var account in GetCustomerAccounts(id, page, perPage))
+			{
+				var devices = client.GetPersonalAccountTerminalDevices(
+					new PagedRequest<string> { Key = account.PersonalAccountId }).Items;
+				foreach (var device in devices)
+					if (++counter <= perPage)
 						yield return device;
-				}
+					else
+						yield break;
+			}
+		}
+
+		public IEnumerable<PersonalAccount> GetContractAccounts(
+			string code,
+			int page = 0,
+			int perPage = 0)
+		{
+			var accounts = client.GetContractPersonalAccounts(
+				new PagedRequest<string> { Key = code }).Items;
+			return accounts.Take(perPage);
+		}
+
+		public IEnumerable<TerminalDevice> GetContractDevices(
+			string code,
+			int page = 0,
+			int perPage = 25)
+		{
+			int counter = 0;
+			foreach (var account in GetContractAccounts(code, page, perPage))
+			{
+				var devices = client.GetPersonalAccountTerminalDevices(
+					new PagedRequest<string> { Key = account.PersonalAccountId }).Items;
+				foreach (var device in devices)
+					if (++counter <= perPage)
+						yield return device;
+					else
+						yield break;
 			}
 		}
 
 		public IEnumerable<Service> GetAccountServices(
-			string accountCode,
-			TarificationOption tarificationOption,
+			string code,
+			TarificationOption tarification,
 			int page = 0,
-			int itemsPerPage = 25)
+			int perPage = 25)
 		{
 			var devices = client.GetPersonalAccountTerminalDevices(
-				new PagedRequest<string> { Key = accountCode });
+				new PagedRequest<string> { Key = code });
 
+			int counter = 0;
 			foreach (var device in devices.Items)
 			{
 				var services = client.GetTerminalDeviceServices(
 					new PagedRequest<string> { Key = device.Msisdn });
 
 				foreach (var service in services.Items)
-					if (rnd.NextDouble() < 0.5)
+					if (++counter <= perPage)
 						yield return service;
+					else
+						yield break;
 			}
 		}
 	}

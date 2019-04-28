@@ -5,7 +5,7 @@ namespace ApiEndpoint
 	public class Mutation
 	{
 		public bool AddService(
-			string serviceCode,
+			string code,
 			IEnumerable<string> devicesMsisdns)
 		{
 			return true;
