@@ -80,7 +80,7 @@ namespace ApiEndpoint
 		public IEnumerable<PersonalAccount> GetContractAccounts(
 			string code,
 			int page = 0,
-			int perPage = 0)
+			int perPage = 25)
 		{
 			var accounts = client.GetContractPersonalAccounts(
 				new PagedRequest<string> { Key = code }).Items;
