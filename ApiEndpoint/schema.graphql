@@ -1,6 +1,6 @@
 ﻿type Customer {
-  id: Int!
-  name: String!
+  customerId: Int!
+  customerName: String!
   customerType: CustomerType!
 }
 
@@ -10,7 +10,7 @@ enum CustomerType {
 }
 
 type Contract {
-  code: String!
+  contractCode: String!
   customerId: Integer!
   marketingCategory: SimpleEntity
   legalCategory: LegalCategory!
@@ -27,7 +27,7 @@ type SimpleEntity {
 }
 
 type PersonalAccount {
-  id: ID!
+  personalAccountId: ID!
   contractId: ID!
   calculationMethod: CalculationMethod
   currencyCode: String
@@ -41,7 +41,7 @@ enum CalculationMethod {
 
 type TerminalDevice {
   msisdn: String
-  accountCode: String
+  personalAccountCode: String
   tariffPlan: SimpleEntity
 }
 
@@ -72,8 +72,8 @@ type Query {
 
 type Mutation {
   addService(
-    service: Service!
-    devices: [PersonalDevice!]
+    serviceCode: String!
+    devicesMsisdns: [String!]
   ): Boolean
 }
 

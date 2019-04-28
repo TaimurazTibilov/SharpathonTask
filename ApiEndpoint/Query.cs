@@ -9,26 +9,27 @@ namespace ApiEndpoint
 {
 	public enum TarificationOption
 	{
-
+		Periodic,
+		Counter,
 	}
 
 	public class Query
 	{
-		public TerminalDevice[] GetCustomerDevices(
+		public IEnumerable<TerminalDevice> GetCustomerDevices(
 			int customerId,
 			int page,
 			int itemsPerPage)
 		{
-			return new[] { new TerminalDevice { Msisdn = 2, PersonalAccountCode = "234" } };
+			yield return new TerminalDevice { Msisdn = "2", PersonalAccountCode = "234" };
 		}
 
-		public Service[] GetAccountServices(
+		public IEnumerable<Service> GetAccountServices(
 			string accountCode,
 			TarificationOption tarificationOption,
 			int page,
 			int itemsPerPage)
 		{
-			return new[] { new Service { Code = "123", Name = "456" } };
+			yield return new Service { Code = "123", Name = "456" };
 		}
 	}
 }

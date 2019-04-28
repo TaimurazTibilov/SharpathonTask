@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using HotChocolate;
+using HotChocolate.AspNetCore;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,11 +32,100 @@ namespace ApiEndpoint
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
 			services.AddGraphQL(
-				File.ReadAllText("schema.graphql"),
+				@"
+				type Customer {
+				  customerId: Int!
+				  customerName: String!
+				  customerType: CustomerType!
+				}
+
+				enum CustomerType {
+				  Individual
+				  Organization
+				}
+
+				type Contract {
+				  contractCode: String!
+				  customerId: Int!
+				  marketingCategory: SimpleEntity
+				  legalCategory: LegalCategory!
+				}
+
+				enum LegalCategory {
+				  Resident
+				  Nonresident
+				}
+
+				type SimpleEntity {
+				  code: String!
+				  name: String!
+				}
+
+				type PersonalAccount {
+				  personalAccountId: ID!
+				  contractId: ID!
+				  calculationMethod: CalculationMethod
+				  currencyCode: String
+				  serviceProvider: SimpleEntity!
+				}
+
+				enum CalculationMethod {
+				  Prepaid
+				  Postpaid
+				}
+
+				type TerminalDevice {
+				  msisdn: String
+				  personalAccountCode: String
+				  tariffPlan: SimpleEntity
+				}
+
+				type Service {
+				  code: String!
+				  name: String!
+				}
+
+				enum TarificationOption {
+				  Periodic,
+				  Counter
+				}
+
+				type Query {
+				  personDevices(
+					customerId: Int!
+					page: Int! = 0
+					itemsPerPage: Int! = 25
+				  ): [Devices!]
+  
+				  accountServices(
+  					accountCode: String!
+					tarificationFilter: TarificationOption,
+					page: Int! = 0,
+					itemsPerPage: Int! = 25
+				  ): [Service!]
+				}
+
+				type Mutation {
+				  addService(
+					serviceCode: String!
+					devicesMsisdns: [String!]
+				  ): Boolean
+				}
+
+				schema {
+				  query: Query
+				  mutation: Mutation
+				}",
 				sp => Schema.Create(c =>
 				{
+					c.BindType<Customer>();
+					c.BindType<Contract>();
+					c.BindType<SimpleEntity>();
+					c.BindType<PersonalAccount>();
+					c.BindType<TerminalDevice>();
+					c.BindType<Service>();
 					c.BindType<Query>();
-					c.BindType()
+					c.BindType<Mutation>();
 				}));
 		}
 
@@ -52,6 +142,7 @@ namespace ApiEndpoint
 				app.UseHsts();
 			}
 
+			app.UseGraphQL();
 			app.UseHttpsRedirection();
 			app.UseMvc();
 		}
