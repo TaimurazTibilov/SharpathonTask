@@ -52,7 +52,18 @@ namespace ApiEndpoint
 			int page,
 			int itemsPerPage)
 		{
-			yield return new Service { Code = "123", Name = "456" };
+			var devices = client.GetPersonalAccountTerminalDevices(
+				new PagedRequest<string> { Key = accountCode });
+
+			foreach (var device in devices.Items)
+			{
+				var services = client.GetTerminalDeviceServices(
+					new PagedRequest<string> { Key = device.Msisdn });
+
+				foreach (var service in services.Items)
+					if (service.Name.Length % 2 == (int)tarificationOption % 2)
+						yield return service;
+			}
 		}
 	}
 }
