@@ -155,6 +155,7 @@ namespace ApiEndpoint
 			}
 
 			app.UseGraphQL("/graphql");
+			app.UseGraphiQL("/graphql", "/graphiql");
 		}
 	}
 }
