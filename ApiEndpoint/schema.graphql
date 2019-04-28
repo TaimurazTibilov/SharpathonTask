@@ -1,0 +1,83 @@
+﻿type Customer {
+  id: Int!
+  name: String!
+  customerType: CustomerType!
+}
+
+enum CustomerType {
+  Individual
+  Organization
+}
+
+type Contract {
+  code: String!
+  customerId: Integer!
+  marketingCategory: SimpleEntity
+  legalCategory: LegalCategory!
+}
+
+enum LegalCategory {
+  Resident
+  Nonresident
+}
+
+type SimpleEntity {
+  code: String!
+  name: String!
+}
+
+type PersonalAccount {
+  id: ID!
+  contractId: ID!
+  calculationMethod: CalculationMethod
+  currencyCode: String
+  serviceProvider: SimpleEntity!
+}
+
+enum CalculationMethod {
+  Prepaid
+  Postpaid
+}
+
+type TerminalDevice {
+  msisdn: String
+  accountCode: String
+  tariffPlan: SimpleEntity
+}
+
+type Service {
+  code: String!
+  name: String!
+}
+
+enum TarificationOption {
+  Periodic,
+  Counter
+}
+
+type Query {
+  personDevices(
+    customerId: Int!
+    page: Int! = 0
+    itemsPerPage: Int! = 25
+  ): [Devices!]
+  
+  accountServices(
+  	accountCode: String!
+    tarificationFilter: TarificationOption,
+    page: Int! = 0,
+    itemsPerPage: Int! = 25
+  ): [Service!]
+}
+
+type Mutation {
+  addService(
+    service: Service!
+    devices: [PersonalDevice!]
+  ): Boolean
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}

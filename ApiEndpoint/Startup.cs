@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using GraphQL.Server;
+using HotChocolate;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -11,8 +12,9 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using SharpathonTask.Contracts;
 
-namespace WebApi
+namespace ApiEndpoint
 {
 	public class Startup
 	{
@@ -28,12 +30,13 @@ namespace WebApi
 		{
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-			// Add GraphQL services and configure options
-			services.AddGraphQL(options =>
-			{
-				options.EnableMetrics = true;
-				options.ExposeExceptions = true;
-			});
+			services.AddGraphQL(
+				File.ReadAllText("schema.graphql"),
+				sp => Schema.Create(c =>
+				{
+					c.BindType<Query>();
+					c.BindType()
+				}));
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
