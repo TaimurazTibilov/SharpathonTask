@@ -18,6 +18,7 @@ namespace ApiEndpoint
 	public class Query
 	{
 		private static CustomerDataClient client;
+		private static Random rnd = new Random();
 
 		static Query()
 		{
@@ -27,8 +28,8 @@ namespace ApiEndpoint
 
 		public IEnumerable<TerminalDevice> GetCustomerDevices(
 			int customerId,
-			int page,
-			int itemsPerPage)
+			int page = 0,
+			int itemsPerPage = 25)
 		{
 			var contracts = client.GetCustomerContracts(
 				new PagedRequest<int> { Key = customerId }).Items;
@@ -49,8 +50,8 @@ namespace ApiEndpoint
 		public IEnumerable<Service> GetAccountServices(
 			string accountCode,
 			TarificationOption tarificationOption,
-			int page,
-			int itemsPerPage)
+			int page = 0,
+			int itemsPerPage = 25)
 		{
 			var devices = client.GetPersonalAccountTerminalDevices(
 				new PagedRequest<string> { Key = accountCode });
@@ -61,7 +62,7 @@ namespace ApiEndpoint
 					new PagedRequest<string> { Key = device.Msisdn });
 
 				foreach (var service in services.Items)
-					if (service.Name.Length % 2 == (int)tarificationOption % 2)
+					if (rnd.NextDouble() < 0.5)
 						yield return service;
 			}
 		}
