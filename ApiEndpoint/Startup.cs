@@ -28,14 +28,6 @@ namespace ApiEndpoint
 		}
 	}
 
-	public class TarifficationOptionType : EnumType<TarificationOption>
-	{
-		protected override void Configure(IEnumTypeDescriptor<TarificationOption> descriptor)
-		{
-			descriptor.BindItems(BindingBehavior.Explicit);
-		}
-	}
-
 	public class Startup
 	{
 		public Startup(IConfiguration configuration)
@@ -145,7 +137,7 @@ namespace ApiEndpoint
 					c.BindType<Service>();
 					c.BindType<Query>();
 					c.BindType<Mutation>();
-					c.BindResolver<TarifficationOptionType>();
+					c.BindResolver<EnumType<TarificationOption>>();
 				}));
 		}
 
