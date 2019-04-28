@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using HotChocolate;
 using HotChocolate.AspNetCore;
+using HotChocolate.Types;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -17,6 +18,17 @@ using SharpathonTask.Contracts;
 
 namespace ApiEndpoint
 {
+	public class CustomerType : ObjectType<Customer>
+	{
+		protected override void Configure(IObjectTypeDescriptor<Customer> descriptor)
+		{
+			descriptor.Field(f => f.CustomerId).Type<NonNullType<IntType>>();
+			descriptor.Field(f => f.CustomerName).Type<NonNullType<StringType>>();
+			descriptor.Field(f => f.CustomerType).Type<NonNullType<EnumType<SharpathonTask.Contracts.CustomerType>>>();
+		}
+	}
+
+
 	public class Startup
 	{
 		public Startup(IConfiguration configuration)
@@ -32,6 +44,7 @@ namespace ApiEndpoint
 			services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
 			services.AddGraphQL(
+				sp => Schema.Create(
 				@"
 				type Customer {
 				  customerId: Int!
@@ -91,11 +104,11 @@ namespace ApiEndpoint
 				}
 
 				type Query {
-				  personDevices(
+				  customerDevices(
 					customerId: Int!
 					page: Int! = 0
 					itemsPerPage: Int! = 25
-				  ): [Devices!]
+				  ): [TerminalDevice!]
   
 				  accountServices(
   					accountCode: String!
@@ -116,8 +129,7 @@ namespace ApiEndpoint
 				  query: Query
 				  mutation: Mutation
 				}",
-				sp => Schema.Create(c =>
-				{
+				c => {
 					c.BindType<Customer>();
 					c.BindType<Contract>();
 					c.BindType<SimpleEntity>();
@@ -142,7 +154,7 @@ namespace ApiEndpoint
 				app.UseHsts();
 			}
 
-			app.UseGraphQL();
+			app.UseGraphQL("/graphql");
 			app.UseHttpsRedirection();
 			app.UseMvc();
 		}
