@@ -155,8 +155,6 @@ namespace ApiEndpoint
 			}
 
 			app.UseGraphQL("/graphql");
-			app.UseHttpsRedirection();
-			app.UseMvc();
 		}
 	}
 }
