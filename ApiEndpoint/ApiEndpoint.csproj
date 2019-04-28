@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\SharpathonTask.Client\SharpathonTask.Client.csproj" />
     <ProjectReference Include="..\SharpathonTask.Contracts\SharpathonTask.Contracts.csproj" />
   </ItemGroup>
 
